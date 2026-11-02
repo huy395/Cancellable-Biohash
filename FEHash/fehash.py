@@ -78,7 +78,7 @@ class FEHash:
         X_proj = self.transform(Xtrain)
 
         clf = LinearSVC(
-            C            = self.svm_c,          # ← dùng self.svm_c
+            C            = self.svm_c,
             fit_intercept= False,
             max_iter     = 2000,
             dual         = False,
@@ -131,7 +131,7 @@ class FEHash:
                 "r":        self.r.astype(np.float64),
                 "D":        int(self.D),
                 "d":        int(self.d),
-                "svm_c":    float(self.svm_c),  # ← lưu svm_c
+                "svm_c":    float(self.svm_c),
                 "w":        self.w.astype(np.float64),
                 "b":        np.float64(self.b),
                 "_version": 1,
@@ -152,14 +152,14 @@ class FEHash:
                 D               = params["D"],
                 d               = params["d"],
                 seed            = params["seed"],
-                svm_c           = params.get("svm_c", 0.01),  # ← load svm_c
+                svm_c           = params.get("svm_c", 0.01), 
             )
         else:
             fe = cls(
                 projection_type = params["projection_type"],
                 D               = params["D"],
                 d               = params["d"],
-                svm_c           = params.get("svm_c", 0.01),  # ← load svm_c
+                svm_c           = params.get("svm_c", 0.01),
             )
             fe.Omega = params["Omega"].astype(np.float64)
             fe.r     = params["r"].astype(np.float64)
