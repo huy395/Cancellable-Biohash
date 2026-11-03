@@ -107,7 +107,7 @@ def enroll(
             Y_train.append(1 if bit_val == 1 else -1)
 
         # Padding samples — cân bằng pos/neg
-        rng     = np.random.default_rng(bit_seed)
+        rng = np.random.default_rng(bit_seed)
         pad_ids = list(padding_embs.keys())
         rng.shuffle(pad_ids)
 
