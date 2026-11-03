@@ -143,21 +143,21 @@ def enroll(
         fehash_list.append(fe)
 
     # ── BITSTRING + SHA3 ─────────────────────────────────────────────────
-    sample_emb = user_embs[0]
+    #sample_emb = user_embs[0]
 
-    bitstring = "".join(str(hf.hash(sample_emb)) for hf in fehash_list)
+    #bitstring = "".join(str(hf.hash(sample_emb)) for hf in fehash_list)
 
     # Lưu target bitstring
     with open(os.path.join(user_folder, "bitstring.txt"), "w") as f:
         f.write(s[:K])
 
     # Lưu hash của predicted bitstring
-    sha3_hash = hashlib.sha3_256(bitstring.encode("utf-8")).hexdigest()
+    sha3_hash = hashlib.sha3_256(s[:K].encode("utf-8")).hexdigest()
     with open(os.path.join(user_folder, "bitstring_sha3_256.txt"), "w") as f:
         f.write(sha3_hash)
 
-    print(f"Target s    : {s[:32]}")
-    print(f"Hash result : {bitstring[:32]}")
+    #print(f"Target s    : {s[:32]}")
+    #print(f"Hash result : {bitstring[:32]}")
     print(f"[DONE] User={user_label} | bits={len(bitstring)} | sha={sha3_hash[:8]}...")
 
     return bitstring, fehash_list
