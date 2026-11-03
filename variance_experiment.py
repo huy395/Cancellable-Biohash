@@ -12,7 +12,7 @@ from utils.insightface import load_model, get_embedding
 
 def create_projection(seed, D, d, projection_type):
     """
-    Tái tạo Omega, r từ seed — giống hệt FEHash.create_projection().
+    Tái tạo Omega, r từ seed .
     """
     rng = np.random.default_rng(seed)
 
@@ -28,13 +28,13 @@ def create_projection(seed, D, d, projection_type):
         n_blocks = D // d
         blocks   = []
         for _ in range(n_blocks):
-            G    = rng.normal(0, 1, size=(d, d))
+            G = rng.normal(0, 1, size=(d, d))
             Q, _ = np.linalg.qr(G)
             norm_samples = rng.normal(0, 1, size=(d, d))
-            s    = np.sqrt(np.sum(norm_samples ** 2, axis=1))
+            s = np.sqrt(np.sum(norm_samples ** 2, axis=1))
             blocks.append(np.diag(s) @ Q)
         Omega = np.vstack(blocks)
-        r     = rng.uniform(0, 2 * np.pi, size=D)
+        r = rng.uniform(0, 2 * np.pi, size=D)
 
     else:
         raise ValueError("projection_type must be 'rff' or 'orf'")
@@ -51,7 +51,7 @@ def kernel_estimate_batch(X1, X2, Omega, r):
     r:      (D,)
     Return: (N,)
     """
-    D   = Omega.shape[0]
+    D = Omega.shape[0]
     Z1  = np.sqrt(2.0 / D) * np.cos(X1 @ Omega.T + r)  # (N, D)
     Z2  = np.sqrt(2.0 / D) * np.cos(X2 @ Omega.T + r)  # (N, D)
     return np.sum(Z1 * Z2, axis=1)                       # (N,)
@@ -60,7 +60,7 @@ def kernel_estimate_batch(X1, X2, Omega, r):
 def gaussian_kernel_true(X1, X2, sigma):
     """K(x,y) = exp(-||x-y||^2 / (2*sigma^2))"""
     diff = X1 - X2
-    z2   = np.sum(diff**2, axis=1) / (sigma**2)
+    z2 = np.sum(diff**2, axis=1) / (sigma**2)
     return np.exp(-z2 / 2)
 
 
@@ -111,12 +111,12 @@ def run_experiment(X1, X2, D, d, T, projection_type, base_seed=1000):
         K_trials:  (T, N) — kernel estimates
         var_pairs: (N,)   — empirical variance per pair
     """
-    N        = len(X1)
+    N   = len(X1)
     K_trials = np.zeros((T, N), dtype=np.float64)
 
     for t in range(T):
-        seed        = base_seed + t   # seed độc lập mỗi trial
-        Omega, r    = create_projection(seed, D, d, projection_type)
+        seed = base_seed + t   # seed độc lập mỗi trial
+        Omega, r = create_projection(seed, D, d, projection_type)
         K_trials[t] = kernel_estimate_batch(X1, X2, Omega, r)
 
     var_pairs = K_trials.var(axis=0, ddof=1)   # (N,) unbiased
@@ -129,7 +129,7 @@ def theoretical_ratio(z, D, d):
     Var(K_ORF) / Var(K_RFF) theo Yu et al. 2016:
       1 - (D-1)*exp(-z^2)*z^4 / (d*(1-exp(-z^2))^2)
     """
-    ez2   = np.exp(-z**2)
+    ez2 = np.exp(-z**2)
     denom = d * (1 - ez2)**2
     denom = np.where(np.abs(denom) < 1e-12, 1e-12, denom)
     ratio = 1.0 - (D - 1) * ez2 * z**4 / denom
@@ -146,8 +146,8 @@ def plot_results(results, z_gen, z_imp, D, d, sigma, save_path):
       - 1 file tổng hợp (save_path)
       - 6 file riêng lẻ (save_path stem + _plot1.png, ...)
     """
-    colors   = {'rff': '#2166AC', 'orf': '#1A9641'}
-    base     = save_path.replace('.png', '')   # bỏ đuôi .png
+    colors = {'rff': '#2166AC', 'orf': '#1A9641'}
+    base  = save_path.replace('.png', '')   # bỏ đuôi .png
  
     # ── Hàm lưu figure riêng ─────────────────────────────────────────────────
     def save_single(fig_s, suffix):
