@@ -51,7 +51,7 @@ def run_fixed_one_seed(dataset, save_folder, model,
     Hai loại tổng thời gian per-query:
 
     Total_Time      : embed + avet_transform + hash
-                      (giữ nguyên cách tính cũ — giả định Omega,r,R,A,B
+                      (giả định Omega,r,R,A,B
                       đã có sẵn trong bộ nhớ)
 
     Total_Time_seed : Total_Time
@@ -68,8 +68,8 @@ def run_fixed_one_seed(dataset, save_folder, model,
     genuine_accept  = genuine_total  = 0
     impostor_accept = impostor_total = 0
 
-    all_times      = []   # Total_Time (cũ)
-    all_seed_times = []   # Total_Time_seed (mới)
+    all_times      = []   # Total_Time
+    all_seed_times = []   # Total_Time_seed
     embed_times    = []
     avet_times     = []
     hash_times     = []
@@ -86,7 +86,7 @@ def run_fixed_one_seed(dataset, save_folder, model,
         K = len([f for f in os.listdir(user_dir)
                  if f.startswith("bit_")])
 
-        # ── Load (giả định đã có sẵn — như code cũ) ──────────────────
+        # ── Load ──────────────────
         fehash_bits = [
             FEHash.load(os.path.join(user_dir, f"bit_{i}.pkl.zst"))
             for i in range(K)
