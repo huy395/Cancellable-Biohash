@@ -222,8 +222,8 @@ def evaluate_fixed(dataset, method_dataset_dir, model,
     gar_mean, gar_std = np.mean(GARs), np.std(GARs)
     far_mean, far_std = np.mean(FARs), np.std(FARs)
 
-    print(f"\n  → GAR = {gar_mean*100:.4f} ± {gar_std*100:.4f} %")
-    print(f"  → FAR = {far_mean*100:.4f} ± {far_std*100:.4f} %")
+    print(f"\n  GAR = {gar_mean*100:.4f} ± {gar_std*100:.4f} %")
+    print(f"  FAR = {far_mean*100:.4f} ± {far_std*100:.4f} %")
 
     timing_summary = None
     if all_timings:
@@ -254,14 +254,14 @@ def evaluate_fixed(dataset, method_dataset_dir, model,
               f"{t['total_seed_ms']:.3f} ± {t['total_seed_ms_std']:.3f} ms"
               f"  (regen from seed each query)")
         print(f"  --- breakdown ---")
-        print(f"  embed              : {t['embed_ms']:.3f} ± {t['embed_ms_std']:.3f} ms")
+        print(f"  embed  : {t['embed_ms']:.3f} ± {t['embed_ms_std']:.3f} ms")
         if use_avet:
-            print(f"  AVET transform     : {t['avet_ms']:.3f} ± {t['avet_ms_std']:.3f} ms")
-        print(f"  FEHash + hash      : {t['hash_ms']:.3f} ± {t['hash_ms_std']:.3f} ms")
+            print(f"  AVET transform   : {t['avet_ms']:.3f} ± {t['avet_ms_std']:.3f} ms")
+        print(f"  FEHash + hash  : {t['hash_ms']:.3f} ± {t['hash_ms_std']:.3f} ms")
         print(f"  regen Omega,r (×K) : {t['load_fehash_ms']:.3f} ms")
         if use_avet:
-            print(f"  regen R,A,B        : {t['load_avet_ms']:.3f} ms")
-        print(f"  regen total        : {t['regen_overhead_ms']:.3f} ms")
+            print(f"  regen R,A,B  : {t['load_avet_ms']:.3f} ms")
+        print(f"  regen total  : {t['regen_overhead_ms']:.3f} ms")
 
     return {
         "GAR_mean": gar_mean, "GAR_std": gar_std,
@@ -308,17 +308,17 @@ def save_result(result_dir, method_label, dataset_name, result):
         if not sum_exists:
             writer.writerow([
                 "timestamp", "method", "dataset",
-                "GAR_mean%",         "GAR_std%",
-                "FAR_mean%",         "FAR_std%",
-                "n_seeds",           "seeds",
+                "GAR_mean%", "GAR_std%",
+                "FAR_mean%", "FAR_std%",
+                "n_seeds",  "seeds",
                 
-                "Total_Time_ms",     "Total_Time_ms_std",
+                "Total_Time_ms", "Total_Time_ms_std",
                 
                 "Total_Time_seed_ms","Total_Time_seed_ms_std",
                 # breakdown
-                "embed_ms",          "embed_ms_std",
-                "avet_ms",           "avet_ms_std",
-                "hash_ms",           "hash_ms_std",
+                "embed_ms",  "embed_ms_std",
+                "avet_ms", "avet_ms_std",
+                "hash_ms", "hash_ms_std",
                 "regen_fehash_ms",
                 "regen_avet_ms",
                 "regen_total_ms",
@@ -331,23 +331,23 @@ def save_result(result_dir, method_label, dataset_name, result):
             f"{result['FAR_std']*100:.4f}",
             result["n_seeds"],
             str(result["seeds"]),
-            f"{t.get('total_ms',          0):.3f}",
-            f"{t.get('total_ms_std',      0):.3f}",
-            f"{t.get('total_seed_ms',     0):.3f}",
+            f"{t.get('total_ms',  0):.3f}",
+            f"{t.get('total_ms_std', 0):.3f}",
+            f"{t.get('total_seed_ms', 0):.3f}",
             f"{t.get('total_seed_ms_std', 0):.3f}",
-            f"{t.get('embed_ms',          0):.3f}",
-            f"{t.get('embed_ms_std',      0):.3f}",
-            f"{t.get('avet_ms',           0):.3f}",
-            f"{t.get('avet_ms_std',       0):.3f}",
-            f"{t.get('hash_ms',           0):.3f}",
-            f"{t.get('hash_ms_std',       0):.3f}",
-            f"{t.get('load_fehash_ms',    0):.3f}",
-            f"{t.get('load_avet_ms',      0):.3f}",
+            f"{t.get('embed_ms', 0):.3f}",
+            f"{t.get('embed_ms_std', 0):.3f}",
+            f"{t.get('avet_ms', 0):.3f}",
+            f"{t.get('avet_ms_std', 0):.3f}",
+            f"{t.get('hash_ms', 0):.3f}",
+            f"{t.get('hash_ms_std', 0):.3f}",
+            f"{t.get('load_fehash_ms', 0):.3f}",
+            f"{t.get('load_avet_ms', 0):.3f}",
             f"{t.get('regen_overhead_ms', 0):.3f}",
         ])
 
-    print(f"  Per-seed → {seed_csv}")
-    print(f"  Summary  → {sum_csv}")
+    print(f"  Per-seed :{seed_csv}")
+    print(f"  Summary :{sum_csv}")
 
 
 # ========================================================================
@@ -356,38 +356,38 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser("Fixed Matching Evaluation")
-    parser.add_argument("--data_root",          required=True)
+    parser.add_argument("--data_root",  required=True)
     parser.add_argument("--method_dataset_dir", required=True)
-    parser.add_argument("--result_dir",         required=True)
-    parser.add_argument("--method_label",       required=True)
-    parser.add_argument("--use_avet",           action="store_true")
-    parser.add_argument("--n_pos",              type=int, default=8)
-    parser.add_argument("--n_neg",              type=int, default=100)
+    parser.add_argument("--result_dir", required=True)
+    parser.add_argument("--method_label",  required=True)
+    parser.add_argument("--use_avet", action="store_true")
+    parser.add_argument("--n_pos", type=int, default=8)
+    parser.add_argument("--n_neg", type=int, default=100)
     args = parser.parse_args()
 
-    model        = load_model()
-    dataset      = FEHashDataset(args.data_root)
+    model = load_model()
+    dataset = FEHashDataset(args.data_root)
     dataset_name = os.path.basename(args.data_root.rstrip("/\\"))
 
     print(f"\n{'='*55}")
     print(f"Method  : {args.method_label}")
     print(f"Dataset : {dataset_name}")
-    print(f"Dir     : {args.method_dataset_dir}")
-    print(f"n_pos   : {args.n_pos}  |  n_neg : {args.n_neg}")
+    print(f"Dir : {args.method_dataset_dir}")
+    print(f"n_pos : {args.n_pos}  |  n_neg : {args.n_neg}")
     print(f"{'='*55}")
 
     result = evaluate_fixed(
-        dataset            = dataset,
+        dataset  = dataset,
         method_dataset_dir = args.method_dataset_dir,
-        model              = model,
-        use_avet           = args.use_avet,
-        n_pos              = args.n_pos,
-        n_neg              = args.n_neg,
+        model = model,
+        use_avet = args.use_avet,
+        n_pos = args.n_pos,
+        n_neg = args.n_neg,
     )
 
     save_result(
-        result_dir   = args.result_dir,
+        result_dir  = args.result_dir,
         method_label = args.method_label,
         dataset_name = dataset_name,
-        result       = result,
+        result  = result,
     )
