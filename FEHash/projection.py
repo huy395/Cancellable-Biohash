@@ -10,9 +10,7 @@ class Projection:
         self.D = int(D)
         self.d = int(d)
 
-    # =========================
-    # FACTORY (CHỈ DÙNG Ở ENROLL)
-    # =========================
+    
     @staticmethod
     def create(projection_type, D, d, seed):
         rng = np.random.RandomState(seed)
@@ -40,17 +38,13 @@ class Projection:
             d=d
         )
 
-    # =========================
-    # TRANSFORM (GIỮ NGUYÊN SHAPE)
-    # =========================
+    
     def transform(self, X):
         if X.ndim == 1:
             X = X.reshape(1, -1)
         return np.sqrt(2.0 / self.D) * np.cos(np.dot(X, self.Omega.T) + self.r)
 
-    # =========================
-    # SAVE / LOAD (PARAM ONLY)
-    # =========================
+    
     def save(self, path):
         save_pickle_zst({
             "projection_type": self.projection_type,
