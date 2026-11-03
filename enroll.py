@@ -169,16 +169,16 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="FEHash Enrollment")
 
-    parser.add_argument("--data_root",      required=True,          help="Dataset root folder")
-    parser.add_argument("--bitstring_file", required=True,          help="User bitstrings")
-    parser.add_argument("--save_folder",    default="templates",    help="Save templates")
-    parser.add_argument("--model_name",     default="buffalo_sc",   help="InsightFace model")
-    parser.add_argument("--K",              type=int, default=128,  help="Number of hash bits")
-    parser.add_argument("--D",              type=int, default=512,  help="Projection dimension")
-    parser.add_argument("--p",              type=int, default=21,   help="Padding users")
-    parser.add_argument("--projection",     choices=["rff", "orf"], default="orf")
-    parser.add_argument("--global_seed",    type=int, default=42)
-    parser.add_argument("--use_avet",       action="store_true",    help="Enable AVET")
+    parser.add_argument("--data_root", required=True, help="Dataset root folder")
+    parser.add_argument("--bitstring_file", required=True, help="User bitstrings")
+    parser.add_argument("--save_folder", default="templates", help="Save templates")
+    parser.add_argument("--model_name", default="buffalo_sc",  help="InsightFace model")
+    parser.add_argument("--K", type=int, default=128,  help="Number of hash bits")
+    parser.add_argument("--D", type=int, default=512,  help="Projection dimension")
+    parser.add_argument("--p", type=int, default=21,  help="Padding users")
+    parser.add_argument("--projection",  choices=["rff", "orf"], default="orf")
+    parser.add_argument("--global_seed",  type=int, default=42)
+    parser.add_argument("--use_avet", action="store_true", help="Enable AVET")
     parser.add_argument("--svm_c", type=float, default=0.01, help="SVM regularization C")
 
     args = parser.parse_args()
@@ -186,7 +186,7 @@ if __name__ == "__main__":
     ctx_id = 0 if torch.cuda.is_available() else -1
     model  = load_model(args.model_name, ctx_id=ctx_id)
 
-    dataset  = FEHashDataset(args.data_root)
+    dataset = FEHashDataset(args.data_root)
     seed_mgr = SeedManager(args.global_seed)
     os.makedirs(args.save_folder, exist_ok=True)
 
@@ -208,18 +208,18 @@ if __name__ == "__main__":
         print(f"Enroll user {idx+1}/{len(user_labels)} : {user_label}")
 
         enroll(
-            dataset         = dataset,
-            user_label      = user_label,
-            s               = s,
-            K               = args.K,
-            D               = args.D,
-            p               = args.p,
-            save_folder     = args.save_folder,
-            model           = model,
-            seed_mgr        = seed_mgr,
-            svm_c           = args.svm_c,
+            dataset = dataset,
+            user_label = user_label,
+            s = s,
+            K = args.K,
+            D = args.D,
+            p = args.p,
+            save_folder = args.save_folder,
+            model = model,
+            seed_mgr  = seed_mgr,
+            svm_c  = args.svm_c,
             projection_type = args.projection,
-            use_avet        = args.use_avet,
+            use_avet = args.use_avet,
         )
 
     print("\n[ALL USERS ENROLLED SUCCESSFULLY]")
