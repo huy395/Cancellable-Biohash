@@ -165,23 +165,23 @@ def evaluate_tunable(dataset, method_dataset_dir, model,
               f"GAR={r['GAR']*100:.4f}%  "
               f"FAR={r['FAR']*100:.4f}%")
 
-    gar_mean, gar_std       = np.mean(GARs), np.std(GARs)
-    far_mean, far_std       = np.mean(FARs), np.std(FARs)
-    eer_mean, eer_std       = np.mean(EERs), np.std(EERs)
-    auc_mean, auc_std       = np.mean(AUCs), np.std(AUCs)
-    eer_thresh_mean         = np.mean(EER_thresholds)
-    eer_thresh_std          = np.std(EER_thresholds)
+    gar_mean, gar_std = np.mean(GARs), np.std(GARs)
+    far_mean, far_std = np.mean(FARs), np.std(FARs)
+    eer_mean, eer_std = np.mean(EERs), np.std(EERs)
+    auc_mean, auc_std = np.mean(AUCs), np.std(AUCs)
+    eer_thresh_mean = np.mean(EER_thresholds)
+    eer_thresh_std = np.std(EER_thresholds)
 
-    print(f"\n  → EER     = {eer_mean*100:.4f} ± {eer_std*100:.4f} %")
-    print(f"  → τ (EER) = {eer_thresh_mean:.4f} ± {eer_thresh_std:.4f}")
-    print(f"  → AUC     = {auc_mean:.4f} ± {auc_std:.4f}")
-    print(f"  → GAR     = {gar_mean*100:.4f} ± {gar_std*100:.4f} %")
-    print(f"  → FAR     = {far_mean*100:.4f} ± {far_std*100:.4f} %")
+    print(f"\n  : EER = {eer_mean*100:.4f} ± {eer_std*100:.4f} %")
+    print(f"  : τ (EER) = {eer_thresh_mean:.4f} ± {eer_thresh_std:.4f}")
+    print(f"  : AUC = {auc_mean:.4f} ± {auc_std:.4f}")
+    print(f"  : GAR = {gar_mean*100:.4f} ± {gar_std*100:.4f} %")
+    print(f"  : FAR = {far_mean*100:.4f} ± {far_std*100:.4f} %")
 
     return {
-        "fpr_list":           all_fpr,
-        "tpr_list":           all_tpr,
-        "thresholds_list":    all_thresholds,
+        "fpr_list": all_fpr,
+        "tpr_list": all_tpr,
+        "thresholds_list": all_thresholds,
         "GAR_mean": gar_mean, "GAR_std":  gar_std,
         "FAR_mean": far_mean, "FAR_std":  far_std,
         "EER_mean": eer_mean, "EER_std":  eer_std,
@@ -191,7 +191,7 @@ def evaluate_tunable(dataset, method_dataset_dir, model,
         "GARs": GARs, "FARs": FARs,
         "EERs": EERs, "AUCs": AUCs,
         "EER_thresholds": EER_thresholds,
-        "seeds":   seed_vals,
+        "seeds": seed_vals,
         "n_seeds": len(seed_vals),
     }
 
@@ -237,10 +237,10 @@ def save_result(result_dir, method_label, dataset_name, result):
         if not sum_exists:
             writer.writerow([
                 "timestamp", "method", "dataset",
-                "GAR_mean%",     "GAR_std%",
-                "FAR_mean%",     "FAR_std%",
-                "EER_mean%",     "EER_std%",
-                "AUC_mean",      "AUC_std",
+                "GAR_mean%", "GAR_std%",
+                "FAR_mean%", "FAR_std%",
+                "EER_mean%",  "EER_std%",
+                "AUC_mean",  "AUC_std",
                 "EER_thresh_mean", "EER_thresh_std",
                 "n_seeds", "seeds",
             ])
@@ -287,9 +287,9 @@ def save_result(result_dir, method_label, dataset_name, result):
 
     np.savez(npz_path, **save_dict)
 
-    print(f"  Per-seed → {seed_csv}")
-    print(f"  Summary  → {sum_csv}")
-    print(f"  ROC data → {npz_path}")
+    print(f"  Per-seed : {seed_csv}")
+    print(f"  Summary  : {sum_csv}")
+    print(f"  ROC data : {npz_path}")
 
 
 # ====================================================================================
@@ -309,8 +309,8 @@ if __name__ == "__main__":
     parser.add_argument("--n_neg",              type=int, default=100)
     args = parser.parse_args()
 
-    model        = load_model()
-    dataset      = FEHashDataset(args.data_root)
+    model = load_model()
+    dataset = FEHashDataset(args.data_root)
     dataset_name = os.path.basename(args.data_root.rstrip("/\\"))
 
     print(f"\n{'='*55}")
@@ -321,17 +321,17 @@ if __name__ == "__main__":
     print(f"{'='*55}")
 
     result = evaluate_tunable(
-        dataset            = dataset,
+        dataset = dataset,
         method_dataset_dir = args.method_dataset_dir,
-        model              = model,
-        use_avet           = args.use_avet,
-        n_pos              = args.n_pos,
-        n_neg              = args.n_neg,
+        model = model,
+        use_avet = args.use_avet,
+        n_pos = args.n_pos,
+        n_neg = args.n_neg,
     )
 
     save_result(
-        result_dir   = args.result_dir,
+        result_dir = args.result_dir,
         method_label = args.method_label,
         dataset_name = dataset_name,
-        result       = result,
+        result = result,
     )
