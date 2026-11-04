@@ -19,4 +19,4 @@ Please cite foundational papers (e.g., ArcFace, RetinaFace) as applicable:
 ```
 *(Full BibTeX citations for SCRFD, Partial FC, or other models can be found in the [InsightFace Citation Section](https://github.com).)*
 
-insightface model: https://github.com/deepinsight/insightface/blob/master/python-package/docs/model_zoo.md
+InsightFace model: https://github.com/deepinsight/insightface/blob/master/python-package/docs/model_zoo.md
